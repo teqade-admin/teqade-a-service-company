@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BASE_PATH: ${{ github.event.repository.name != format('{0}.github.io', github.repository_owner) && format('/{0}', github.event.repository.name) || '' }}
+      PAGES_DEPLOY_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,14 +37,14 @@ jobs:
           cache: pnpm
 
       - name: Configure GitHub Pages
-        if: ${{ secrets.PAGES_DEPLOY_TOKEN != '' }}
+        if: ${{ env.PAGES_DEPLOY_TOKEN != '' }}
         uses: actions/configure-pages@v5
         with:
           enablement: true
-          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          token: ${{ env.PAGES_DEPLOY_TOKEN }}
 
       - name: Configure GitHub Pages
-        if: ${{ secrets.PAGES_DEPLOY_TOKEN == '' }}
+        if: ${{ env.PAGES_DEPLOY_TOKEN == '' }}
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
