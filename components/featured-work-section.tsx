@@ -2,6 +2,10 @@
 
 import { ArrowUpRight, Globe, Car, Gauge } from "lucide-react"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
+// Cover photos from Unsplash (Unsplash License, free for commercial use):
+// Smartbell by Suvrajit S, MotoMate by Joseph Pillado, Steerlit by Hans.
 const projects = [
   {
     icon: Globe,
@@ -10,7 +14,8 @@ const projects = [
     description:
       "Built an ML-powered platform that processes thousands of sensor data from dozens of farms and hundreds of cattle regularly, extracting insights and identifying activities, behaviours, and workflows for determining health and anomalies.",
     tags: ["AWS", "Python", "Clickhouse"],
-    gradient: "from-primary/20 to-accent/20",
+    cover: "/images/work/smartbell.jpg",
+    coverAlt: "Dairy cows with yellow ear tags feeding in a barn",
   },
   {
     icon: Car,
@@ -19,7 +24,8 @@ const projects = [
     description:
       "MotoMate is a smart garage management platform that digitizes vehicle servicing, customer communication, and workflow tracking in one seamless system that helps garages improve efficiency, increase revenue, and deliver a modern, transparent service experience.",
     tags: ["Flutter", "FastAPI", "WhatsappBusinessAPI", "Supabase", "Razorpay"],
-    gradient: "from-accent/20 to-primary/20",
+    cover: "/images/work/motomate.jpg",
+    coverAlt: "A mechanic servicing a car in a busy garage workshop",
   },
   {
     icon: Gauge,
@@ -28,7 +34,8 @@ const projects = [
     description:
       "Steerlit is an AI-powered smart car platform that monitors vehicle health in real time and delivers predictive insights to enhance safety, performance, and maintenance.",
     tags: ["Flutter", "Python", "AWS", "Razorpay", "OBD"],
-    gradient: "from-primary/20 via-transparent to-accent/20",
+    cover: "/images/work/steerlit.jpg",
+    coverAlt: "A modern car dashboard with a large touchscreen display",
   },
 ]
 
@@ -57,10 +64,18 @@ export function FeaturedWorkSection() {
               key={project.title}
               className="group relative flex h-full flex-col overflow-hidden bg-background transition-all duration-300 hover:bg-secondary"
             >
-              {/* Gradient Header */}
-              <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                <div className="flex h-16 w-16 items-center justify-center border border-foreground/10 bg-background/10 backdrop-blur-sm">
-                  <project.icon className="h-8 w-8 text-foreground" />
+              {/* Cover Photo */}
+              <div className="relative h-44 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`${basePath}${project.cover}`}
+                  alt={project.coverAlt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent transition-colors duration-300 group-hover:from-secondary" />
+                <div className="absolute bottom-3 left-6 flex h-10 w-10 items-center justify-center border border-foreground/15 bg-background/60 backdrop-blur-sm">
+                  <project.icon className="h-5 w-5 text-primary" />
                 </div>
               </div>
 
@@ -91,7 +106,7 @@ export function FeaturedWorkSection() {
 
               {/* Hover Arrow */}
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <ArrowUpRight className="h-5 w-5 text-primary" />
+                <ArrowUpRight className="h-5 w-5 text-primary drop-shadow" />
               </div>
             </div>
           ))}
