@@ -7,7 +7,7 @@ const footerLinks = {
   company: [
     { label: "About", href: "#why-teqade" },
     { label: "Services", href: "#services" },
-    { label: "Process", href: "#how-we-work" },
+    { label: "How We Work", href: "#how-we-work" },
     { label: "Work", href: "#work" },
   ],
   contact: [
@@ -31,7 +31,7 @@ export function Footer() {
               <span className="text-primary">.</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs text-pretty mb-4">
-              Product engineering for startups. We build dreams into scalable products.
+              Your vision. Our engineering. The engineering partner for startups and growing companies — from architecture to scale.
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 text-primary" />

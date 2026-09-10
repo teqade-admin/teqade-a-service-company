@@ -7,7 +7,8 @@ import { Menu, X } from "lucide-react"
 
 const navLinks = [
   { href: "#services", label: "Services" },
-  { href: "#how-we-work", label: "Process" },
+  { href: "#stack", label: "Stack" },
+  { href: "#how-we-work", label: "How We Work" },
   { href: "#why-teqade", label: "Why Us" },
   { href: "#work", label: "Work" },
 ]
@@ -33,7 +34,7 @@ export function Navbar() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <nav className="flex h-16 items-center justify-between">
+        <nav className={`flex h-16 items-center justify-between ${isScrolled ? "border-x border-border/50 px-4" : ""}`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="relative flex items-center">
@@ -62,7 +63,7 @@ export function Navbar() {
             <Link href="#contact">
               <Button
                 size="sm"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200"
+                className="rounded-none bg-primary font-bold text-primary-foreground hover:bg-primary/90 transition-all duration-200"
               >
                 Start Your Project
               </Button>

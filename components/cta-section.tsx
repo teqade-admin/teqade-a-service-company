@@ -6,26 +6,26 @@ import Link from "next/link"
 
 export function CTASection() {
   return (
-    <section id="contact" className="py-24 sm:py-32 relative overflow-hidden">
+    <section id="contact" className="py-20 sm:py-28 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-background" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[128px]" />
       
-      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 mx-auto max-w-5xl border border-border/70 bg-card/40 px-6 py-14 sm:px-10 sm:py-20 text-center">
         {/* Main Content */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground text-balance mb-6">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance mb-6">
           Have an Idea?{" "}
           <span className="text-gradient">{"Let's Build It."}</span>
         </h2>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground text-pretty mb-10">
-          {"Whether you're launching a startup or scaling an existing product, we're here to help you build something great."}
+          {"Launching a startup, bringing AI into production, or scaling an existing platform? Bring the vision — we'll bring the engineering."}
         </p>
 
         {/* CTA Button */}
         <Link href="mailto:info@teqade.com">
           <Button
             size="lg"
-            className="group bg-primary text-primary-foreground hover:bg-primary/90 glow-primary transition-all duration-300 px-8 mb-12"
+            className="group rounded-none bg-primary text-primary-foreground hover:bg-primary/90 glow-primary transition-all duration-300 px-8 mb-12"
           >
             Start Your Product Journey
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

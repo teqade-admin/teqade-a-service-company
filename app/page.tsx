@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
+import { BuildShowcaseSection } from "@/components/build-showcase-section"
 import { ServicesSection } from "@/components/services-section"
+import { TechStackSection } from "@/components/tech-stack-section"
 import { HowWeWorkSection } from "@/components/how-we-work-section"
 import { WhyTeqadeSection } from "@/components/why-teqade-section"
 import { FeaturedWorkSection } from "@/components/featured-work-section"
@@ -13,7 +15,9 @@ export default function Home() {
     <main className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
+      <BuildShowcaseSection />
       <ServicesSection />
+      <TechStackSection />
       <HowWeWorkSection />
       <WhyTeqadeSection />
       <FeaturedWorkSection />

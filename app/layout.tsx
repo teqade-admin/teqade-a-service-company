@@ -15,21 +15,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Teqade Technologies | Product Engineering for Startups',
-  description: 'We build startup dreams into scalable products. From idea to architecture to production — we design, build, and scale world-class software products.',
-  keywords: ['product engineering', 'startup development', 'AI systems', 'software architecture', 'MVP development', 'scalable products'],
+  title: 'Teqade Technologies | Your Vision. Our Engineering.',
+  description: 'Teqade is the engineering partner for startups and growing companies — we architect, build, scale, and run software across product, AI, data, and cloud, while every decision stays with you.',
+  keywords: ['engineering partner', 'product engineering', 'startup development', 'AI transformation', 'agentic AI', 'data engineering', 'Apache Airflow', 'cloud migration', 'software architecture', 'MVP development'],
   authors: [{ name: 'Teqade Technologies' }],
   openGraph: {
-    title: 'Teqade Technologies | Product Engineering for Startups',
-    description: 'We build startup dreams into scalable products. From idea to architecture to production.',
+    title: 'Teqade Technologies | Your Vision. Our Engineering.',
+    description: 'The engineering partner for startups and growing companies — from architecture to scale, across product, AI, data, and cloud.',
     type: 'website',
     locale: 'en_US',
     siteName: 'Teqade Technologies',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Teqade Technologies | Product Engineering for Startups',
-    description: 'We build startup dreams into scalable products.',
+    title: 'Teqade Technologies | Your Vision. Our Engineering.',
+    description: 'The engineering partner for startups and growing companies.',
   },
   icons: {
     icon: `${basePath}/favicon.png`,

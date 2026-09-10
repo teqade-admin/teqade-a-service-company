@@ -34,14 +34,14 @@ const projects = [
 
 export function FeaturedWorkSection() {
   return (
-    <section id="work" className="py-24 sm:py-32 relative bg-card/20">
+    <section id="work" className="py-20 sm:py-28 relative bg-card/20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-sm font-medium text-primary uppercase tracking-widest">
             Featured Work
           </span>
-          <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground text-balance">
+          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
             Products We Have Built
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
@@ -50,15 +50,15 @@ export function FeaturedWorkSection() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 gap-px bg-border lg:grid-cols-3">
           {projects.map((project) => (
             <div
               key={project.title}
-              className="group relative flex flex-col h-full rounded-2xl border border-border/50 bg-background overflow-hidden hover:border-primary/30 transition-all duration-300"
+              className="group relative flex h-full flex-col overflow-hidden bg-background transition-all duration-300 hover:bg-secondary"
             >
               {/* Gradient Header */}
               <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                <div className="w-16 h-16 rounded-2xl bg-background/10 backdrop-blur-sm flex items-center justify-center border border-foreground/10">
+                <div className="flex h-16 w-16 items-center justify-center border border-foreground/10 bg-background/10 backdrop-blur-sm">
                   <project.icon className="h-8 w-8 text-foreground" />
                 </div>
               </div>
@@ -80,7 +80,7 @@ export function FeaturedWorkSection() {
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-secondary text-secondary-foreground"
+                      className="inline-flex items-center border border-border px-2.5 py-1 text-xs font-medium bg-secondary text-secondary-foreground"
                     >
                       {tag}
                     </span>
