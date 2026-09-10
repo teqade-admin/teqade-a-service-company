@@ -4,9 +4,22 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Mail, Phone } from "lucide-react"
 import Link from "next/link"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export function CTASection() {
   return (
     <section id="contact" className="py-20 sm:py-28 relative overflow-hidden">
+      {/* Background photo, darkened (Vitaly Gariev, Unsplash License) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`${basePath}/images/sections/celebrate.jpg`}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-25"
+      />
+      <div className="absolute inset-0 bg-background/70" />
+
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-background" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[128px]" />

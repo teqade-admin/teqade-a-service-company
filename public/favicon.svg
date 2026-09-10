@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Teqade favicon: a bold lowercase "t" in brand green on the site's dark background -->
+  <rect width="64" height="64" rx="14" fill="#0A0D12"/>
+  <path fill="#5CFF8A" d="M26 11h9.5v10.5H46v8.5H35.5v13c0 3.4 1.6 5 5 5H46v8.5h-6.5C30.6 56.5 26 52 26 43.2V30h-6.5v-8.5H26z"/>
+</svg>

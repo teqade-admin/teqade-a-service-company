@@ -2,6 +2,8 @@
 
 import { Target, Users, UserPlus, LifeBuoy, Compass, ArrowRightLeft } from "lucide-react"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 const models = [
   {
     icon: Target,
@@ -63,6 +65,24 @@ export function HowWeWorkSection() {
             Flexible engagement models that adapt to your scope, team, and stage. Whatever the
             model, you own the code and the decisions.
           </p>
+        </div>
+
+        {/* Banner (photo: Annie Spratt, Unsplash License) */}
+        <div className="relative mb-8 h-56 overflow-hidden border border-border sm:h-72">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${basePath}/images/sections/collaboration.jpg`}
+            alt="A product team collaborating around laptops"
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/50 to-transparent" />
+          <div className="absolute inset-y-0 left-0 flex max-w-lg flex-col justify-center p-8 sm:p-10">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">One team</span>
+            <p className="mt-3 text-2xl font-black uppercase leading-tight tracking-[-0.04em] text-foreground sm:text-3xl">
+              We embed with your team. You keep every decision.
+            </p>
+          </div>
         </div>
 
         {/* Engagement Models */}

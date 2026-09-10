@@ -2,6 +2,8 @@
 
 import { Compass, KeyRound, Layers, LockOpen, Users, Cpu } from "lucide-react"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 const differentiators = [
   {
     icon: Compass,
@@ -43,8 +45,18 @@ const differentiators = [
 
 export function WhyTeqadeSection() {
   return (
-    <section id="why-teqade" className="py-20 sm:py-28 relative">
+    <section id="why-teqade" className="py-20 sm:py-28 relative overflow-hidden">
       {/* Background */}
+      {/* faint code texture (photo: Pankaj Patel, Unsplash License) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`${basePath}/images/sections/code.jpg`}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.14]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -2,6 +2,10 @@
 
 import { Rocket, BrainCircuit, Database } from "lucide-react"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
+// Cover photos from Unsplash (Unsplash License): Austin Distel, Immo Wegmann, Taylor Vick.
+
 const focusAreas = [
   {
     icon: Rocket,
@@ -10,6 +14,8 @@ const focusAreas = [
     description:
       "Have an idea? We give you the engineering team to build it — architecture, MVP, launch, and scale — without hiring one first.",
     features: ["MVP Development", "Web & Mobile Apps", "APIs & Microservices"],
+    cover: "/images/sections/idea.jpg",
+    coverAlt: "A startup team planning around a whiteboard",
   },
   {
     icon: BrainCircuit,
@@ -18,6 +24,8 @@ const focusAreas = [
     description:
       "Move AI out of pilots and into your workflows. Agents, copilots, and RAG systems that are grounded, observable, and safe.",
     features: ["Agentic AI", "RAG & Copilots", "Document Processing"],
+    cover: "/images/sections/ai.jpg",
+    coverAlt: "A glowing AI chip on a circuit board",
   },
   {
     icon: Database,
@@ -26,6 +34,8 @@ const focusAreas = [
     description:
       "Pipelines, orchestration, and lakehouses that make your data reliable for analytics, ML, and AI.",
     features: ["Data Pipelines", "Apache Airflow", "Lakehouse & Warehousing"],
+    cover: "/images/sections/data.jpg",
+    coverAlt: "Server racks with network cabling in a data center",
   },
 ]
 
@@ -106,9 +116,19 @@ export function ServicesSection() {
               key={area.title}
               className="group relative flex flex-col bg-card p-8 transition-all duration-300 hover:bg-secondary"
             >
-              {/* Icon */}
-              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center border border-primary/30 bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                <area.icon className="h-6 w-6" />
+              {/* Cover photo, bleeding to the card edges, with the icon as a badge */}
+              <div className="relative -mx-8 -mt-8 mb-6 h-40 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`${basePath}${area.cover}`}
+                  alt={area.coverAlt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent transition-colors duration-300 group-hover:from-secondary" />
+                <div className="absolute bottom-3 left-8 inline-flex h-11 w-11 items-center justify-center border border-primary/30 bg-background/70 text-primary backdrop-blur-sm transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                  <area.icon className="h-5 w-5" />
+                </div>
               </div>
 
               {/* Content */}
