@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Geist_Mono } from 'next/font/google'
+import { Inter, Geist_Mono, Figtree } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -9,9 +9,14 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
-const geistMono = Geist_Mono({ 
+const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
+});
+// Body copy: a clean, Netflix Sans-style grotesque (Netflix Sans itself is proprietary)
+const figtree = Figtree({
+  subsets: ["latin"],
+  variable: "--font-figtree",
 });
 
 export const metadata: Metadata = {
@@ -50,7 +55,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${geistMono.variable} ${figtree.variable} font-sans antialiased`}>
         {children}
         <Analytics />
       </body>

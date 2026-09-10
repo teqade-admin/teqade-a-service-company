@@ -15,5 +15,7 @@ node_modules
 .next/
 out/
 *.tsbuildinfo
+# rendered marketing videos (regenerate with marketing/imessage-ad/record.mjs)
+marketing/**/*.mp4
 .DS_Store
 .vercel

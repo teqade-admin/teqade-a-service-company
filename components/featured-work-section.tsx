@@ -42,10 +42,11 @@ export function FeaturedWorkSection() {
             Featured Work
           </span>
           <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
-            Products We Have Built
+            Built the Founder Way
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
-            A glimpse into the products we have shipped for startups and enterprises alike.
+            Real products we have engineered alongside founders. Their vision, our engineering,
+            shipped to production.
           </p>
         </div>
 

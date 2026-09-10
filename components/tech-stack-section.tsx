@@ -137,11 +137,12 @@ export function TechStackSection() {
                   <polygon key={scale} points={polygonPoints(scale)} className="fill-none stroke-border" strokeDasharray="6 8" strokeWidth={1} />
                 ))}
                 <polygon points={polygonPoints(1)} className="fill-none stroke-primary/50" strokeWidth={2} />
-                <polygon points={polygonPoints(0.17)} className="fill-background stroke-primary" strokeWidth={2} />
-                <text x={CX} y={CY - 6} textAnchor="middle" className="fill-primary text-[22px] font-black uppercase tracking-[0.2em]">
+                {/* hub: tiles fill from the outer rings inward, so the inner two rings are free */}
+                <polygon points={polygonPoints(0.26)} className="fill-background stroke-primary" strokeWidth={2} />
+                <text x={CX} y={CY + 2} textAnchor="middle" className="fill-primary text-[20px] font-black uppercase tracking-[0.12em]">
                   Teqade
                 </text>
-                <text x={CX} y={CY + 22} textAnchor="middle" className="fill-muted-foreground text-[14px] font-semibold uppercase tracking-[0.25em]">
+                <text x={CX} y={CY + 26} textAnchor="middle" className="fill-muted-foreground text-[12px] font-semibold uppercase tracking-[0.3em]">
                   Stack
                 </text>
               </svg>

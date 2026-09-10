@@ -38,10 +38,10 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="relative flex items-center">
-              <span className="text-xl font-bold tracking-tight text-foreground">
-                Teqade
+              <span className="font-[family-name:var(--font-inter)] text-xl font-bold tracking-tight text-foreground">
+                Teqade Technologies
               </span>
-              <span className="ml-1 text-primary">.</span>
+              <span className="ml-0.5 text-primary">.</span>
             </div>
           </Link>
 

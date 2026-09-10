@@ -1,0 +1,12 @@
+{
+  "name": "teqade-imessage-ad",
+  "private": true,
+  "description": "Renders index.html into teqade-imessage-ad.mp4 (node record.mjs)",
+  "scripts": {
+    "record": "node record.mjs"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "puppeteer-core": "^25.10.0"
+  }
+}
