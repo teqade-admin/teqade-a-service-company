@@ -44,7 +44,8 @@ export function BuildShowcaseSection() {
             ))}
           </ul>
         </div>
-        <div className="relative h-[440px] overflow-hidden sm:h-[520px] lg:h-[600px]">
+        {/* the 3D showcase stays dark in the light theme too: its neon floor is designed for it */}
+        <div className="dark-scope relative h-[440px] overflow-hidden bg-background sm:h-[520px] lg:h-[600px]">
           <BuilderScene stages={stages} />
         </div>
       </div>

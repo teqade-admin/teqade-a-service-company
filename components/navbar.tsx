@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Handshake, Menu, X } from "lucide-react"
 import { TqLogo } from "@/components/tq-logo"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { useProjectForm } from "@/components/project-form"
 
 const navLinks = [
@@ -32,7 +33,7 @@ export function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isMobileMenuOpen
-          ? "bg-background border-b border-border shadow-[0_12px_32px_rgba(0,0,0,0.6)]" // solid, so the open menu reads over the page
+          ? "bg-background border-b border-border shadow-2xl" // solid, so the open menu reads over the page
           : isScrolled
             ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
             : "bg-transparent"
@@ -70,6 +71,7 @@ export function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
             <Button
               size="sm"
               onClick={openProjectForm}
@@ -107,6 +109,10 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <div className="flex items-center justify-between py-2">
+                <span className="text-base font-medium text-foreground/90">Light theme</span>
+                <ThemeToggle />
+              </div>
               <Button
                 size="sm"
                 onClick={() => {
