@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { MapPin, Mail, Phone, Linkedin, Twitter } from "lucide-react"
+import { TqLogo } from "@/components/tq-logo"
 
 const footerLinks = {
   company: [
@@ -24,11 +25,11 @@ export function Footer() {
         <div className="py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <span className="text-xl font-bold tracking-tight text-foreground">
-                Teqade
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
+              <TqLogo />
+              <span className="font-[family-name:var(--font-inter)] text-xl font-bold tracking-tight text-foreground">
+                Teqade Technologies
               </span>
-              <span className="text-primary">.</span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs text-pretty mb-4">
               Your vision. Our engineering. The engineering partner for startups and growing companies — from architecture to scale.

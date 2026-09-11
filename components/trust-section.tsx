@@ -35,10 +35,10 @@ export function TrustSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest">
             Testimonials
           </span>
-          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
+          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance">
             Built for Founders. Trusted by Teams.
           </h2>
         </div>
@@ -48,7 +48,7 @@ export function TrustSection() {
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.author}
-              className="relative bg-card p-6"
+              className="card-torch relative bg-card p-6"
             >
               {/* Quote Icon */}
               <Quote className="h-8 w-8 text-primary/30 mb-4" />

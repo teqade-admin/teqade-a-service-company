@@ -9,6 +9,7 @@ import { FeaturedWorkSection } from "@/components/featured-work-section"
 import { TrustSection } from "@/components/trust-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
+import { CursorGlow } from "@/components/cursor-glow"
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <TrustSection />
       <CTASection />
       <Footer />
+      <CursorGlow />
     </main>
   )
 }

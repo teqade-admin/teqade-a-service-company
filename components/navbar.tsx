@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Handshake, Menu, X } from "lucide-react"
+import { TqLogo } from "@/components/tq-logo"
 
 const navLinks = [
   { href: "#services", label: "Services" },
@@ -37,11 +38,16 @@ export function Navbar() {
         <nav className={`flex h-16 items-center justify-between ${isScrolled ? "border-x border-border/50 px-4" : ""}`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="relative flex items-center">
-              <span className="font-[family-name:var(--font-inter)] text-xl font-bold tracking-tight text-foreground">
-                Teqade Technologies
+            <div className="relative flex items-center gap-2.5">
+              <TqLogo />
+              <span className="flex flex-col">
+                <span className="font-[family-name:var(--font-inter)] text-xl font-bold leading-tight tracking-tight text-foreground">
+                  Teqade Technologies
+                </span>
+                <span className="flex items-center gap-1 text-[10px] font-bold uppercase leading-none tracking-[0.18em] text-primary">
+                  <Handshake className="h-3 w-3" /> Your engineering partner
+                </span>
               </span>
-              <span className="ml-0.5 text-primary">.</span>
             </div>
           </Link>
 

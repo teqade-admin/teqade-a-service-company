@@ -26,9 +26,9 @@ export function CTASection() {
       
       <div className="relative z-10 mx-auto max-w-5xl border border-border/70 bg-card/40 px-6 py-14 sm:px-10 sm:py-20 text-center">
         {/* Main Content */}
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance mb-6">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance mb-6">
           Have an Idea?{" "}
-          <span className="text-gradient">{"Let's Build It."}</span>
+          {"Let's Build It."}
         </h2>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground text-pretty mb-10">
           {"Launching a startup, bringing AI into production, or scaling an existing platform? Bring the vision — we'll bring the engineering."}

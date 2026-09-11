@@ -62,10 +62,10 @@ export function WhyTeqadeSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest">
             Why Teqade
           </span>
-          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
+          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance">
             Your Vision Stays Yours
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
@@ -78,7 +78,7 @@ export function WhyTeqadeSection() {
           {differentiators.map((item) => (
             <div
               key={item.title}
-              className="group bg-card p-6 hover:bg-secondary transition-all duration-300"
+              className="card-torch group bg-card p-6 hover:bg-secondary transition-all duration-300"
             >
               {/* Icon */}
               <div className="mb-4 inline-flex items-center justify-center w-10 h-10 border border-primary/30 bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors duration-300">

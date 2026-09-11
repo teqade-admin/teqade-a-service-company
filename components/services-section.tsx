@@ -97,10 +97,10 @@ export function ServicesSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-12 grid gap-5 border-l-2 border-primary pl-5 md:grid-cols-[0.8fr_1.2fr] md:items-end md:pl-7">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest md:col-span-2">
             What We Do
           </span>
-          <h2 className="mt-2 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
+          <h2 className="mt-2 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance">
             One Partner. Every Stage.
           </h2>
           <p className="max-w-2xl text-lg text-muted-foreground text-pretty md:pb-1">
@@ -114,7 +114,7 @@ export function ServicesSection() {
           {focusAreas.map((area) => (
             <div
               key={area.title}
-              className="group relative flex flex-col bg-card p-8 transition-all duration-300 hover:bg-secondary"
+              className="card-torch group relative flex flex-col bg-card p-8 transition-all duration-300 hover:bg-secondary"
             >
               {/* Cover photo, bleeding to the card edges, with the icon as a badge */}
               <div className="relative -mx-8 -mt-8 mb-6 h-40 overflow-hidden">
@@ -163,7 +163,7 @@ export function ServicesSection() {
         </h3>
         <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
           {stages.map((stage) => (
-            <div key={stage.title} className="bg-background p-6 transition-all duration-300 hover:bg-secondary">
+            <div key={stage.title} className="card-torch bg-background p-6 transition-all duration-300 hover:bg-secondary">
               <div className="mb-4 flex items-center gap-3">
                 <span className="text-sm font-bold text-primary">{stage.number}</span>
                 <span className="h-px flex-1 bg-border" />

@@ -45,10 +45,10 @@ export function FeaturedWorkSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest">
             Featured Work
           </span>
-          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
+          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance">
             Built the Founder Way
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
@@ -62,7 +62,7 @@ export function FeaturedWorkSection() {
           {projects.map((project) => (
             <div
               key={project.title}
-              className="group relative flex h-full flex-col overflow-hidden bg-background transition-all duration-300 hover:bg-secondary"
+              className="card-torch group relative flex h-full flex-col overflow-hidden bg-background transition-all duration-300 hover:bg-secondary"
             >
               {/* Cover Photo */}
               <div className="relative h-44 overflow-hidden">

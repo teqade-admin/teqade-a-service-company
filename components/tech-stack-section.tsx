@@ -75,8 +75,8 @@ export function TechStackSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-12 grid gap-5 border-l-2 border-primary pl-5 md:grid-cols-[0.8fr_1.2fr] md:items-end md:pl-7">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">Our Stack · {total}+ tools</span>
-          <h2 className="mt-2 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest md:col-span-2">Our Stack · {total}+ tools</span>
+          <h2 className="mt-2 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance">
             Open Tools. Proven at Scale.
           </h2>
           <p className="max-w-2xl text-lg text-muted-foreground text-pretty md:pb-1">
@@ -96,7 +96,7 @@ export function TechStackSection() {
                 onMouseLeave={() => setActive(null)}
                 onFocus={() => setActive(i)}
                 onBlur={() => setActive(null)}
-                className={`p-5 outline-none transition-colors duration-200 ${active === i ? "bg-secondary" : "bg-card"}`}
+                className={`card-torch p-5 outline-none transition-colors duration-200 ${active === i ? "bg-secondary" : "bg-card"}`}
               >
                 <div className="flex items-baseline gap-3">
                   <span className="text-xs font-bold text-primary">0{i + 1}</span>

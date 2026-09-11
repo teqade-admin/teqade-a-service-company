@@ -55,10 +55,10 @@ export function HowWeWorkSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest">
             How We Work
           </span>
-          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance">
+          <h2 className="mt-4 text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance">
             Partner the Way That Fits
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
@@ -90,7 +90,7 @@ export function HowWeWorkSection() {
           {models.map((model) => (
             <div
               key={model.title}
-              className="group bg-background p-6 transition-all duration-300 hover:bg-secondary"
+              className="card-torch group bg-background p-6 transition-all duration-300 hover:bg-secondary"
             >
               <div className="mb-4 flex items-start justify-between gap-4">
                 <div className="inline-flex items-center justify-center w-10 h-10 border border-primary/30 bg-secondary text-primary">

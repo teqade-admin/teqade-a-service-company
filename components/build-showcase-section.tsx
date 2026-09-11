@@ -21,12 +21,12 @@ export function BuildShowcaseSection() {
     <section aria-labelledby="build-showcase-title" className="px-4 pb-12 sm:px-6 lg:px-8 lg:pb-16">
       <div className="mx-auto grid max-w-7xl border border-border/70 bg-card/40 lg:grid-cols-[0.38fr_0.62fr]">
         <div className="flex flex-col justify-center border-b border-border/70 px-6 py-10 sm:px-10 lg:border-b-0 lg:border-r lg:px-12">
-          <span className="text-sm font-medium text-primary uppercase tracking-widest">
+          <span className="block text-sm font-medium text-primary uppercase tracking-widest">
             Four arms. One partner.
           </span>
           <h2
             id="build-showcase-title"
-            className="mt-4 text-4xl sm:text-5xl font-black uppercase leading-none tracking-[-0.06em] text-foreground text-balance"
+            className="mt-4 text-4xl sm:text-5xl font-black uppercase leading-none tracking-[-0.06em] inline-block title-spotlight text-balance"
           >
             Your empire, chip by chip.
           </h2>

@@ -37,10 +37,7 @@ export const metadata: Metadata = {
     description: 'The engineering partner for startups and growing companies.',
   },
   icons: {
-    icon: [
-      { url: `${basePath}/favicon.svg`, type: 'image/svg+xml' },
-      { url: `${basePath}/favicon.png`, sizes: '32x32', type: 'image/png' },
-    ],
+    icon: [{ url: `${basePath}/favicon.png`, sizes: '64x64', type: 'image/png' }],
     apple: `${basePath}/apple-icon.png`,
   },
 }
