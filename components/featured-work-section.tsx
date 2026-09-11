@@ -1,14 +1,11 @@
 "use client"
 
-import { ArrowUpRight, Globe, Car, Gauge } from "lucide-react"
-
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
 // Cover photos from Unsplash (Unsplash License, free for commercial use):
 // Smartbell by Suvrajit S, MotoMate by Joseph Pillado, Steerlit by Hans.
 const projects = [
   {
-    icon: Globe,
     category: "Smartbell UK - Cattle Health Monitoring Platform",
     title: "Intelligent Cattle Monitoring",
     description:
@@ -18,7 +15,6 @@ const projects = [
     coverAlt: "Dairy cows with yellow ear tags feeding in a barn",
   },
   {
-    icon: Car,
     category: "SaaS Application",
     title: "Garage Revenue Engine",
     description:
@@ -28,7 +24,6 @@ const projects = [
     coverAlt: "A mechanic servicing a car in a busy garage workshop",
   },
   {
-    icon: Gauge,
     category: "Automotive AI & Vehicle Intelligence Platform",
     title: "Steerlit — The Future of Car Intelligence",
     description:
@@ -74,9 +69,6 @@ export function FeaturedWorkSection() {
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent transition-colors duration-300 group-hover:from-secondary" />
-                <div className="absolute bottom-3 left-6 flex h-10 w-10 items-center justify-center border border-foreground/15 bg-background/60 backdrop-blur-sm">
-                  <project.icon className="h-5 w-5 text-primary" />
-                </div>
               </div>
 
               {/* Content */}
@@ -102,11 +94,6 @@ export function FeaturedWorkSection() {
                     </span>
                   ))}
                 </div>
-              </div>
-
-              {/* Hover Arrow */}
-              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <ArrowUpRight className="h-5 w-5 text-primary drop-shadow" />
               </div>
             </div>
           ))}

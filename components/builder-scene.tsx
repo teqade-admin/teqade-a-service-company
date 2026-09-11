@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { ArrowDown, ArrowUp } from "lucide-react"
 import * as THREE from "three"
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js"
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js"
@@ -39,6 +40,13 @@ function gripFor(width: number) {
   return { angle, offset: HAND_SCALE * (0.26 + PROXIMAL * Math.cos(angle)) }
 }
 const IDLE_GRIP = gripFor(0.5)
+
+// Scroll buttons (top-left of the scene): clicking one sends an arm out to poke it, and the page
+// scrolls as the fingertips land.
+type ScrollDir = "up" | "down"
+const SCROLL_DIRS: ScrollDir[] = ["up", "down"]
+const PRESS_TIME = 1.3 // seconds: reach, poke, return
+const PRESS_GRIP = gripFor(0.12) // fingers closed into a poke
 const HOLD_END = BUILD_END + 2.6
 const CYCLE = HOLD_END + 1.6
 const STATIC_TIME = BUILD_END + 1.2
@@ -114,9 +122,17 @@ function fitFont(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, 
   } while (ctx.measureText(text).width > maxWidth && s > 10)
 }
 
+const SCENE_LABEL =
+  "Animated 3D scene: a man in a sharp suit and sunglasses, with four robotic arms attached to his back, picks up microchips and stacks them into a stepped, Empire-style skyscraper topped with a glowing spire. A speech bubble from the founder reads: I call the shots. Teqade's engineering arms build it."
+
 export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
+  const bubbleRef = useRef<HTMLDivElement>(null)
+  const tailRef = useRef<SVGSVGElement>(null)
+  const outlineRef = useRef<SVGPathElement>(null)
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const pressRef = useRef<(dir: ScrollDir) => void>(() => {})
   const [failed, setFailed] = useState(false)
 
   useEffect(() => {
@@ -137,6 +153,9 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
     renderer.domElement.style.display = "block"
     renderer.domElement.style.width = "100%"
     renderer.domElement.style.height = "100%"
+    // the description lives on the canvas, so the scroll-key buttons beside it stay reachable
+    renderer.domElement.setAttribute("role", "img")
+    renderer.domElement.setAttribute("aria-label", SCENE_LABEL)
     container.appendChild(renderer.domElement)
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -262,6 +281,13 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
       scene.add(pad)
     })
 
+    // ---------- scroll buttons: down to the next section, up to the one before (the hero) ----------
+    const scrollPage = (dir: ScrollDir) => {
+      const section = container.closest("section")
+      const target = dir === "down" ? section?.nextElementSibling : section?.previousElementSibling
+      target?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" })
+    }
+
     // ---------- the four-armed builder ----------
     const figure = new THREE.Group()
     figure.position.set(0, 0, FIGURE_Z)
@@ -297,6 +323,8 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
         }
       })
       figure.add(model)
+      // the founder speaks once he's on stage
+      for (const el of [bubbleRef.current, tailRef.current]) if (el) el.style.opacity = "1"
       model.updateMatrixWorld(true)
       // sit the rig flush against his back, measured at chest height
       const hit = new THREE.Raycaster(new THREE.Vector3(0, 1.55 * FIGURE_SCALE, FIGURE_Z - 3), new THREE.Vector3(0, 0, 1)).intersectObject(model, true)[0]
@@ -477,6 +505,18 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
     const handPositions = ARMS.map(() => new THREE.Vector3())
     let pointerYaw = 0
     let pointerTarget = 0
+    const pressHand = new THREE.Vector3()
+    const pokeDir = new THREE.Vector3()
+    const viewDir = new THREE.Vector3()
+    const tmp = new THREE.Vector3()
+    // x, y: where the fingertips touch the button, in container px
+    let press: { dir: ScrollDir; x: number; y: number; arm: number; start: number; fired: boolean } | null = null
+    // the world point under container px (x, y), at the same depth as `near`
+    const screenToWorld = (x: number, y: number, near: THREE.Vector3, out: THREE.Vector3) => {
+      out.set((x / container.clientWidth) * 2 - 1, 1 - (y / container.clientHeight) * 2, 0).unproject(camera)
+      camera.getWorldDirection(viewDir)
+      return out.addScaledVector(viewDir, viewDir.dot(tmp.subVectors(near, out)))
+    }
 
     const arc = (out: THREE.Vector3, a: THREE.Vector3, b: THREE.Vector3, v: number, lift: number) =>
       out.lerpVectors(a, b, v).setY(out.y + Math.sin(Math.PI * v) * lift)
@@ -506,6 +546,25 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
           else if (u < 0.84) { hand.copy(to); open = phase(u, 0.78, 0.84) }
           else arc(hand, to, rest, ease(phase(u, 0.84, 1)), 0.5)
         }
+        // scroll button: this arm leaves its job, reaches up to the button, pokes it, and returns
+        let poke = 0
+        if (press && press.arm === a) {
+          const u = clamp01((time - press.start) / PRESS_TIME)
+          poke = ease(phase(u, 0, 0.35)) * (1 - ease(phase(u, 0.72, 1)))
+          const dip = Math.sin(Math.PI * phase(u, 0.36, 0.64))
+          // fingertips point screen-left at the button: hover just off it, then touch
+          pokeDir.setFromMatrixColumn(camera.matrixWorld, 0).negate()
+          screenToWorld(press.x, press.y, arm.rest, pressHand).addScaledVector(pokeDir, -(PRESS_GRIP.offset + 0.45 * (1 - dip)))
+          hand.lerp(pressHand, poke)
+          grip = { angle: THREE.MathUtils.lerp(grip.angle, PRESS_GRIP.angle, poke), offset: grip.offset }
+          open *= 1 - poke
+          buttonRefs.current[SCROLL_DIRS.indexOf(press.dir)]?.toggleAttribute("data-pressed", dip > 0.5)
+          if (u >= 0.5 && !press.fired) {
+            press.fired = true
+            scrollPage(press.dir)
+          }
+          if (u >= 1) press = null
+        }
         handPositions[a].copy(hand)
 
         // tentacle curve: out and up from the harness, then straight down onto the hand
@@ -513,6 +572,7 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
         p0.set(arm.root.x * FIGURE_SCALE, arm.root.y * FIGURE_SCALE, arm.root.z * FIGURE_SCALE + FIGURE_Z + rootShiftZ)
         p1.copy(p0).add(arm.bend)
         p2.copy(hand).setY(hand.y + 1.6)
+        if (poke > 0) p2.lerp(tmp.copy(hand).addScaledVector(pokeDir, -1.6), poke) // last stretch lines up behind the poke
         for (let i = 0; i <= SEGMENTS; i++) bezier(points[i], p0, p1, p2, hand, i / SEGMENTS)
         segments.forEach((segment, i) => {
           dir.subVectors(points[i + 1], points[i])
@@ -561,6 +621,32 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
       camera.lookAt(target)
     }
 
+    const projected = new THREE.Vector3()
+    const toScreen = (point: THREE.Vector3) => {
+      projected.copy(point).project(camera)
+      return [((projected.x + 1) / 2) * container.clientWidth, ((1 - projected.y) / 2) * container.clientHeight] as const
+    }
+
+    // The speech bubble is one outline in SVG (box + long pointer), so it can stay transparent. The
+    // pointer runs from the bottom edge to the founder's mouth, re-aimed every frame as the camera sways.
+    const mouth = new THREE.Vector3(0, 2.32 * FIGURE_SCALE, FIGURE_Z)
+    const placeTail = () => {
+      const bubble = bubbleRef.current
+      const outline = outlineRef.current
+      if (!bubble || !outline) return
+      const l = bubble.offsetLeft + 0.5 // half-pixel insets keep the 1px lines crisp
+      const t = bubble.offsetTop + 0.5
+      const r = bubble.offsetLeft + bubble.offsetWidth - 0.5
+      const b = bubble.offsetTop + bubble.offsetHeight - 0.5
+      const [mx, my] = toScreen(mouth)
+      const baseX = Math.min(Math.max(mx, l + 28), r - 28)
+      const length = Math.hypot(mx - baseX, my - b) || 1
+      const reach = Math.max(0, length - 14) / length // stop just short of his face
+      const tipX = (baseX + (mx - baseX) * reach).toFixed(1)
+      const tipY = (b + (my - b) * reach).toFixed(1)
+      outline.setAttribute("d", `M ${baseX - 9} ${b} H ${l} V ${t} H ${r} V ${b} H ${baseX + 9} L ${tipX} ${tipY} Z`)
+    }
+
     // ---------- lifecycle ----------
     const clock = new THREE.Clock()
     let elapsed = reduced ? STATIC_TIME : 0
@@ -568,11 +654,33 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
     const render = () => {
       update(elapsed)
       renderer.render(scene, camera)
+      placeTail()
     }
     const frame = () => {
       elapsed += Math.min(clock.getDelta(), 0.05)
       render()
     }
+
+    // a scroll button was clicked: the nearest free arm reaches out and pokes it (the scroll fires on contact)
+    const requestPress = (dir: ScrollDir) => {
+      const button = buttonRefs.current[SCROLL_DIRS.indexOf(dir)]
+      if (reduced || !running || !button) return scrollPage(dir)
+      if (press) return
+      const b = button.getBoundingClientRect()
+      const c = container.getBoundingClientRect()
+      const x = b.right - c.left + 2
+      const y = b.top + b.height / 2 - c.top
+      const t = elapsed % CYCLE
+      const busy = (a: number) => t < HOLD_END && items.some((item, k) => k % 4 === a && t >= item.start && t <= item.start + MOVE)
+      const nearest = ARMS.map((arm, a) => {
+        const [sx, sy] = toScreen(arm.rest)
+        return { a, d: Math.hypot(sx - x, sy - y) }
+      })
+        .sort((p, q) => p.d - q.d)
+        .slice(0, 2)
+      press = { dir, x, y, arm: (nearest.find(({ a }) => !busy(a)) ?? nearest[0]).a, start: elapsed, fired: false }
+    }
+    pressRef.current = requestPress
 
     const layout = () => {
       const width = container.clientWidth
@@ -588,14 +696,18 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
         const v = p.clone().applyMatrix4(camera.matrixWorldInverse)
         bounds.expandByPoint(new THREE.Vector2(v.x, v.y))
       })
+      // fit the diorama below a clear band across the top, where the HTML overlays sit
+      const overlayBottom = Math.max(...[buttonRefs.current[0], bubbleRef.current].map((el) => (el ? el.offsetTop + el.offsetHeight : 0)))
+      const reserve = Math.min(overlayBottom + 12, height * 0.35)
       const center = bounds.getCenter(new THREE.Vector2())
       const size = bounds.getSize(new THREE.Vector2()).multiplyScalar(0.53)
-      const aspect = width / height
+      const aspect = width / (height - reserve)
       if (size.x / size.y > aspect) size.y = size.x / aspect
       else size.x = size.y * aspect
+      const unitsPerPx = (2 * size.y) / (height - reserve)
       camera.left = center.x - size.x
       camera.right = center.x + size.x
-      camera.top = center.y + size.y
+      camera.top = center.y + size.y + reserve * unitsPerPx
       camera.bottom = center.y - size.y
       camera.updateProjectionMatrix()
       if (!running) render()
@@ -603,6 +715,7 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
     const resizeObserver = new ResizeObserver(layout)
     resizeObserver.observe(container)
     layout()
+    document.fonts?.ready.then(() => !disposed && layout()) // overlay heights settle once the fonts load
 
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       running = entry.isIntersecting && !reduced
@@ -626,6 +739,7 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
       resizeObserver.disconnect()
       container.removeEventListener("pointermove", onPointerMove)
       container.removeEventListener("pointerleave", onPointerLeave)
+      pressRef.current = () => {}
       scene.traverse((object) => {
         const mesh = object as THREE.Mesh
         mesh.geometry?.dispose()
@@ -644,15 +758,58 @@ export function BuilderScene({ stages }: { stages: BuilderStage[] }) {
   }, [stages])
 
   return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 cursor-crosshair"
-      role="img"
-      aria-label="Animated 3D scene: a man in a sharp suit and sunglasses, with four robotic arms attached to his back, picks up microchips and stacks them into a stepped, Empire-style skyscraper topped with a glowing spire."
-    >
+    <div ref={containerRef} className="absolute inset-0 cursor-crosshair">
+      {/* Scroll up sits in the band across the top that the camera keeps clear of 3D objects (see
+          layout); scroll down in the empty bottom-left corner, beside the platform */}
+      {!failed &&
+        SCROLL_DIRS.map((dir, i) => (
+          <button
+            key={dir}
+            ref={(el) => {
+              buttonRefs.current[i] = el
+            }}
+            type="button"
+            aria-label={`Scroll ${dir}`}
+            onClick={() => pressRef.current(dir)}
+            className={`absolute z-10 inline-flex cursor-pointer items-center gap-1.5 border border-primary/40 bg-background/85 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary transition-[background-color,color,scale] duration-150 hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:scale-95 data-[pressed]:bg-primary data-[pressed]:text-primary-foreground ${
+              dir === "up" ? "left-3 top-3 sm:left-4 sm:top-4" : "bottom-3 left-3 sm:bottom-4 sm:left-4"
+            }`}
+          >
+            {dir === "up" ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
+            <span>
+              <span className="hidden sm:inline">Scroll </span>
+              {dir}
+            </span>
+          </button>
+        ))}
+      <div
+        ref={bubbleRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute right-3 top-3 z-10 w-[240px] max-w-[calc(100%-7.5rem)] opacity-0 transition-opacity duration-700 sm:right-4 sm:top-4"
+      >
+        <div className="px-3 py-2.5 sm:px-4 sm:py-3">
+          <span className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-primary sm:text-[10px]">
+            <span className="h-1.5 w-1.5 animate-pulse bg-primary" />
+            Founder X
+          </span>
+          <p className="mt-1 text-xs font-semibold leading-snug text-foreground sm:text-sm">
+            I call the shots. Teqade&apos;s engineering arms build it.
+          </p>
+        </div>
+      </div>
+      {/* the bubble's outline and pointer: one transparent shape (see placeTail) */}
+      <svg
+        ref={tailRef}
+        aria-hidden="true"
+        data-bubble-outline=""
+        className="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-0 drop-shadow-[0_0_6px_rgba(92,255,138,0.35)] transition-opacity duration-700"
+      >
+        <path ref={outlineRef} className="fill-none stroke-primary/60" strokeWidth={1} strokeMiterlimit={30} />
+      </svg>
       <div
         ref={badgeRef}
-        className="pointer-events-none absolute left-1/2 top-5 z-10 -translate-x-1/2 border border-primary/40 bg-background/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary opacity-0"
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-3 right-3 z-10 border border-primary/40 bg-background/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary opacity-0 sm:bottom-4 sm:right-4"
       >
         Your startup · Live
       </div>

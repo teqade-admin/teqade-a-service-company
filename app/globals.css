@@ -12,6 +12,10 @@
 @layer base { * { @apply border-border outline-ring/50; } body { @apply bg-background text-foreground; background-image: radial-gradient(circle at 15% 10%, oklch(0.85 0.25 145 / .08), transparent 25rem); } h1, h2, h3, h4 { font-family: var(--font-inter), 'Inter', system-ui, sans-serif; } html { scroll-behavior: smooth; } ::selection { background: var(--primary); color: var(--primary-foreground); } }
 @layer utilities { .text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#a5f3d2] to-accent; } .glow-primary { box-shadow: 0 0 35px oklch(0.85 0.25 145 / .22); } .hero-grid { background-image: linear-gradient(oklch(0.85 0.25 145 / .08) 1px, transparent 1px), linear-gradient(90deg, oklch(0.85 0.25 145 / .08) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(to bottom, black, transparent 70%); } .hero-orb { position:absolute; width:34rem; height:34rem; border-radius:999px; filter:blur(110px); opacity:.13; } .hero-orb-one { top:-16rem; right:-8rem; background:var(--primary); } .hero-orb-two { bottom:-22rem; left:-10rem; background:var(--accent); } .hero-button { box-shadow: 6px 6px 0 oklch(0.75 0.18 195 / .45); } .title-spotlight { @apply bg-clip-text text-transparent; background-image: radial-gradient(circle var(--spot-r) at var(--cursor-x, 50%) var(--cursor-y, 50%), var(--primary) 0%, #a5f3d2 45%, #ffffff 100%); transition: --spot-r .35s ease; } .title-spotlight:hover { --spot-r: 220px; } }
 
+/* Images can't be dragged out of the page or saved from the iOS long-press menu
+   (components/image-guard.tsx blocks the right-click menu and drags). */
+@layer base { img, canvas, video { -webkit-user-drag: none; -webkit-touch-callout: none; user-select: none; } }
+
 /* Hover lights; components/cursor-glow.tsx sets --cursor-x / --cursor-y on the hovered element.
    Section titles: white by default; hovering lights the letters under the cursor with the brand gradient.
    Registered so the glow radius can animate. */

@@ -44,7 +44,7 @@ export function BuildShowcaseSection() {
             ))}
           </ul>
         </div>
-        <div className="relative h-[400px] overflow-hidden sm:h-[480px] lg:h-[560px]">
+        <div className="relative h-[440px] overflow-hidden sm:h-[520px] lg:h-[600px]">
           <BuilderScene stages={stages} />
         </div>
       </div>

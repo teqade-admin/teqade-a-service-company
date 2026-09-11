@@ -31,9 +31,11 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
-          : "bg-transparent"
+        isMobileMenuOpen
+          ? "bg-background border-b border-border shadow-[0_12px_32px_rgba(0,0,0,0.6)]" // solid, so the open menu reads over the page
+          : isScrolled
+            ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
+            : "bg-transparent"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -99,7 +101,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 py-2"
+                  className="py-2 text-base font-medium text-foreground/90 transition-colors duration-200 hover:text-primary"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}

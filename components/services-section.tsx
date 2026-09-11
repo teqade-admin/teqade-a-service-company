@@ -1,14 +1,11 @@
 "use client"
 
-import { Rocket, BrainCircuit, Database } from "lucide-react"
-
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
-// Cover photos from Unsplash (Unsplash License): Austin Distel, Immo Wegmann, Taylor Vick.
+// Cover photos from Unsplash (Unsplash License): Austin Distel, Growtika, Luke Chesser.
 
 const focusAreas = [
   {
-    icon: Rocket,
     audience: "Startups & product teams",
     title: "Idea to Product",
     description:
@@ -18,75 +15,24 @@ const focusAreas = [
     coverAlt: "A startup team planning around a whiteboard",
   },
   {
-    icon: BrainCircuit,
     audience: "Companies in AI transformation",
     title: "AI in Production",
     description:
       "Move AI out of pilots and into your workflows. Agents, copilots, and RAG systems that are grounded, observable, and safe.",
     features: ["Agentic AI", "RAG & Copilots", "Document Processing"],
     cover: "/images/sections/ai.jpg",
-    coverAlt: "A glowing AI chip on a circuit board",
+    coverAlt: "An abstract neural network of glowing nodes and lines",
   },
   {
-    icon: Database,
     audience: "Data-driven companies",
     title: "Native Data Workflows",
     description:
       "Pipelines, orchestration, and lakehouses that make your data reliable for analytics, ML, and AI.",
     features: ["Data Pipelines", "Apache Airflow", "Lakehouse & Warehousing"],
     cover: "/images/sections/data.jpg",
-    coverAlt: "Server racks with network cabling in a data center",
+    coverAlt: "An analytics dashboard with charts on a laptop screen",
   },
 ]
-
-const stages = [
-  {
-    number: "01",
-    title: "Architect",
-    summary: "Get the foundations right.",
-    services: [
-      "Solution architecture & system design",
-      "Cloud landing zones & governance",
-      "Security & zero-trust design",
-      "Technical assessments & roadmaps",
-    ],
-  },
-  {
-    number: "02",
-    title: "Build",
-    summary: "Ship production-grade software.",
-    services: [
-      "Web, mobile & full-stack apps",
-      "APIs, microservices & integrations",
-      "Agentic AI, RAG & LLM apps",
-      "Data pipelines & document processing",
-    ],
-  },
-  {
-    number: "03",
-    title: "Scale",
-    summary: "Grow without breaking.",
-    services: [
-      "Cloud migration & modernization",
-      "Kubernetes & container platforms",
-      "DevOps, CI/CD & infrastructure as code",
-      "Performance, observability & FinOps",
-    ],
-  },
-  {
-    number: "04",
-    title: "Run",
-    summary: "Keep it reliable, every day.",
-    services: [
-      "Managed services & 24×7 monitoring",
-      "SRE, SLOs & incident response",
-      "L1/L2/L3 support",
-      "Continuous cost & performance optimization",
-    ],
-  },
-]
-
-const practices = ["DevSecOps", "Test Automation", "Observability", "Documentation", "Knowledge Transfer"]
 
 export function ServicesSection() {
   return (
@@ -116,7 +62,7 @@ export function ServicesSection() {
               key={area.title}
               className="card-torch group relative flex flex-col bg-card p-8 transition-all duration-300 hover:bg-secondary"
             >
-              {/* Cover photo, bleeding to the card edges, with the icon as a badge */}
+              {/* Cover photo, bleeding to the card edges */}
               <div className="relative -mx-8 -mt-8 mb-6 h-40 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -126,9 +72,6 @@ export function ServicesSection() {
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent transition-colors duration-300 group-hover:from-secondary" />
-                <div className="absolute bottom-3 left-8 inline-flex h-11 w-11 items-center justify-center border border-primary/30 bg-background/70 text-primary backdrop-blur-sm transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                  <area.icon className="h-5 w-5" />
-                </div>
               </div>
 
               {/* Content */}
@@ -154,48 +97,6 @@ export function ServicesSection() {
                 ))}
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Lifecycle Stages */}
-        <h3 className="mt-16 mb-6 text-2xl sm:text-3xl font-black uppercase leading-none tracking-[-0.04em] text-foreground">
-          Across your software lifecycle
-        </h3>
-        <div className="grid grid-cols-1 gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {stages.map((stage) => (
-            <div key={stage.title} className="card-torch bg-background p-6 transition-all duration-300 hover:bg-secondary">
-              <div className="mb-4 flex items-center gap-3">
-                <span className="text-sm font-bold text-primary">{stage.number}</span>
-                <span className="h-px flex-1 bg-border" />
-              </div>
-              <h4 className="text-lg font-bold uppercase tracking-wider text-foreground">
-                {stage.title}
-              </h4>
-              <p className="mt-1 mb-5 text-sm text-muted-foreground">{stage.summary}</p>
-              <ul className="flex flex-col gap-2.5">
-                {stage.services.map((service) => (
-                  <li key={service} className="flex gap-2 text-sm text-foreground/90">
-                    <span className="text-primary">→</span>
-                    {service}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Cross-cutting Practices */}
-        <div className="flex flex-wrap items-center gap-2 border-x border-b border-border bg-card/50 px-6 py-4">
-          <span className="mr-2 text-xs font-bold uppercase tracking-wider text-foreground">
-            Built into every stage
-          </span>
-          {practices.map((practice) => (
-            <span
-              key={practice}
-              className="inline-flex items-center border border-border px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground"
-            >
-              {practice}
-            </span>
           ))}
         </div>
       </div>

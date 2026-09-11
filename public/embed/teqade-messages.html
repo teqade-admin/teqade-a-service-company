@@ -11,7 +11,8 @@
   • Click the phone (or press Space) to unlock: the conversation opens and plays, with sound.
   • "Replay" (bottom-right, outside the canvas) or the R key goes back to the lock screen.
   • Pacing lives in CONFIG at the top of the script; the conversation lives in SCRIPT.
-  • ?embed=1 is the website version: just the phone, transparent, back to the lock screen when done.
+  • ?embed=1 is the website version: just the phone, transparent. Scrolled out of view mid-chat it
+    locks, and the next unlock resumes where it stopped; the finished chat stays open.
   • ?scale=1 shows the canvas at its true 1080×1920 size. ?render=1 is used by record.mjs,
     which renders the page frame by frame into an MP4 (with a simulated fingerprint tap).
 
@@ -310,7 +311,8 @@
     clearDraftMs: 420,        // then the draft backspaces away over this long
     trimCutoffDash: true,     // type message 10 up to "handli" and stop (the "—" marks the cut-off)
     finalHold: 3000,          // the finished conversation stays on screen this long
-    relockFade: 600,          // website embed: the lock screen fades back in, ready for another tap
+    relockFade: 600,          // website embed: the lock screen fades back in when the phone is scrolled away mid-chat
+    relockVisible: 0.3,       // website embed: lock once less than this share of the phone is on screen
     soundVolume: 0.16,        // pop loudness, 0–1
     keySoundVolume: 0.14,     // "bubble tick" keyboard sound while the founder types, 0–1
   };
@@ -351,7 +353,7 @@
   const PARAMS = new URLSearchParams(location.search);
   const RENDER = PARAMS.has("render");
   const LOCK_LOOP = PARAMS.has("lockloop");   // render just the locked screen, as a seamless loop
-  const EMBED = PARAMS.has("embed");          // website: phone only, transparent, returns to the lock screen when done
+  const EMBED = PARAMS.has("embed");          // website: phone only, transparent, locks when scrolled away mid-chat
   if (RENDER) document.body.classList.add("render");
   if (EMBED) document.body.classList.add("embed");
 
@@ -490,7 +492,8 @@
      RENDER — draw the exact state of the video at time T (ms)
      ================================================================ */
   let tapAt = null;    // when the fingerprint was touched (null = still locked)
-  let relockAt = null; // website embed: when the lock screen starts fading back in
+  let relockAt = null; // website embed: when the lock screen started fading back in after a pause
+  let resumeFrom = 0;  // website embed: conversation ms already played before the phone was locked mid-chat
 
   function pop(node, dt, dur, { scaleFrom = 0.55, rise = 16 } = {}) {
     const p = clamp01(dt / dur);
@@ -512,7 +515,7 @@
       touch = dt > -140 && dt < 280 ? (dt < 0 ? (dt + 140) / 140 : 1 - dt / 280) : 0;
       unlock = easeInOut(clamp01((T - tapAt - 180) / (CONFIG.unlockMs - 180)));
     }
-    if (relockAt != null) unlock = Math.min(unlock, 1 - easeInOut(clamp01((T - relockAt) / CONFIG.relockFade)));
+    if (tapAt == null && relockAt != null) unlock = 1 - easeInOut(clamp01((T - relockAt) / CONFIG.relockFade));
     fpRing.style.opacity = ring > 0 && ring < 1 ? (0.95 * (1 - ring)).toFixed(3) : "0";
     fpRing.style.transform = `scale(${(1 + 1.7 * easeOutCubic(ring)).toFixed(3)})`;
     fpTouch.style.opacity = (0.9 * touch).toFixed(3);
@@ -577,12 +580,19 @@
   function renderAt(T) {
     renderLock(T);
     const convStart = tapAt == null ? Infinity : tapAt + CONFIG.unlockMs;
-    const c = Math.min(T - convStart, convDuration);   // the finished chat holds its last frame
+    let c = T - convStart;
+    // after a pause the chat waits at resumeFrom (under the lock screen, then through the unlock)
+    if (resumeFrom > 0) c = resumeFrom + Math.max(0, Number.isFinite(c) ? c : 0);
+    c = Math.min(c, convDuration);   // the finished chat holds its last frame
     renderConversation(Number.isFinite(c) ? c : -1);
   }
 
-  const soundsFor = (tap) => [{ t: tap, kind: "unlock" }, ...convSounds.map((s) => ({ t: tap + CONFIG.unlockMs + s.t, kind: s.kind }))];
-  const durationFor = (tap) => tap + CONFIG.unlockMs + convDuration;
+  // `from`: conversation ms already played, when resuming after a pause
+  const soundsFor = (tap, from = 0) => [
+    { t: tap, kind: "unlock" },
+    ...convSounds.filter((s) => !from || s.t > from).map((s) => ({ t: tap + CONFIG.unlockMs + s.t - from, kind: s.kind })),
+  ];
+  const durationFor = (tap, from = 0) => tap + CONFIG.unlockMs + convDuration - from;
 
   /* ================================================================
      SOUND — soft synthesized pops (Web Audio, no files)
@@ -636,19 +646,17 @@
   let t0 = 0, lastT = -1, raf = 0, liveSounds = [];
   function frame(now) {
     const T = now - t0;
-    const end = tapAt == null ? Infinity : durationFor(tapAt);
-    // on the website, the finished chat fades back to the lock screen, ready for another tap
-    if (EMBED && relockAt == null && T >= end) relockAt = T;
-    if (relockAt != null && T >= relockAt + CONFIG.relockFade) return toLockScreen();
+    const end = tapAt == null ? Infinity : durationFor(tapAt, resumeFrom);
     renderAt(T);
     for (const s of liveSounds) if (s.t > lastT && s.t <= T) playPop(s.kind);
     lastT = T;
-    if (tapAt == null || T < end || EMBED) raf = requestAnimationFrame(frame);
+    if (tapAt == null || T < end) raf = requestAnimationFrame(frame);   // the finished chat stays open
   }
   function toLockScreen() {
     cancelAnimationFrame(raf);
     tapAt = null;
     relockAt = null;
+    resumeFrom = 0;
     liveSounds = [];
     t0 = performance.now();
     lastT = -1;
@@ -658,7 +666,19 @@
     if (tapAt != null) return;
     unlockAudio();
     tapAt = performance.now() - t0;
-    liveSounds = soundsFor(tapAt);
+    relockAt = null;
+    liveSounds = soundsFor(tapAt, resumeFrom);
+  }
+  // Website embed: scrolled out of view (or the tab hidden) mid-chat, the phone locks and the chat
+  // freezes; the next unlock picks it up where it stopped. A finished chat is left open.
+  function pause() {
+    if (tapAt == null) return;
+    const T = performance.now() - t0;
+    if (T >= durationFor(tapAt, resumeFrom)) return;
+    resumeFrom = Math.min(resumeFrom + Math.max(0, T - tapAt - CONFIG.unlockMs), convDuration);
+    tapAt = null;
+    relockAt = T;
+    liveSounds = [];
   }
 
   // The phone shows the visitor's real local time and date (renders keep a fixed 9:41 so every
@@ -698,6 +718,11 @@
     setInterval(updateClock, 15000);
     addEventListener("resize", fit);
     phone.addEventListener("pointerdown", unlock);
+    if (EMBED) {
+      // inside the site's iframe, a null root measures against the page's viewport
+      new IntersectionObserver(([entry]) => { if (entry.intersectionRatio < CONFIG.relockVisible) pause(); }, { threshold: [0, CONFIG.relockVisible] }).observe(phone);
+      document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
+    }
     addEventListener("keydown", (e) => {
       if (e.key === " " || e.key === "Enter") { e.preventDefault(); unlock(); }
       if (e.key === "r" || e.key === "R") toLockScreen();

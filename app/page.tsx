@@ -10,6 +10,7 @@ import { TrustSection } from "@/components/trust-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
 import { CursorGlow } from "@/components/cursor-glow"
+import { ImageGuard } from "@/components/image-guard"
 import { ProjectFormProvider } from "@/components/project-form"
 
 export default function Home() {
@@ -28,6 +29,7 @@ export default function Home() {
         <CTASection />
         <Footer />
         <CursorGlow />
+        <ImageGuard />
       </main>
     </ProjectFormProvider>
   )
