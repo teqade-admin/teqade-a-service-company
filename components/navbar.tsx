@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Handshake, Menu, X } from "lucide-react"
 import { TqLogo } from "@/components/tq-logo"
+import { useProjectForm } from "@/components/project-form"
 
 const navLinks = [
   { href: "#services", label: "Services" },
@@ -17,6 +18,7 @@ const navLinks = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const openProjectForm = useProjectForm()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,14 +68,13 @@ export function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-4">
-            <Link href="#contact">
-              <Button
-                size="sm"
-                className="rounded-none bg-primary font-bold text-primary-foreground hover:bg-primary/90 transition-all duration-200"
-              >
-                Start Your Project
-              </Button>
-            </Link>
+            <Button
+              size="sm"
+              onClick={openProjectForm}
+              className="rounded-none bg-primary font-bold text-primary-foreground hover:bg-primary/90 transition-all duration-200"
+            >
+              Start Your Project
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -104,14 +105,16 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button
-                  size="sm"
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Start Your Project
-                </Button>
-              </Link>
+              <Button
+                size="sm"
+                onClick={() => {
+                  setIsMobileMenuOpen(false)
+                  openProjectForm()
+                }}
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                Start Your Project
+              </Button>
             </div>
           </div>
         )}

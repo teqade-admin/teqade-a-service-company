@@ -1,12 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Mail, Phone } from "lucide-react"
-import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { ContactButtons } from "@/components/contact-buttons"
+import { useProjectForm } from "@/components/project-form"
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
 export function CTASection() {
+  const openProjectForm = useProjectForm()
   return (
     <section id="contact" className="py-20 sm:py-28 relative overflow-hidden">
       {/* Background photo, darkened (Vitaly Gariev, Unsplash License) */}
@@ -34,35 +36,19 @@ export function CTASection() {
           {"Launching a startup, bringing AI into production, or scaling an existing platform? Bring the vision — we'll bring the engineering."}
         </p>
 
-        {/* CTA Button */}
-        <Link href="mailto:info@teqade.com">
+        {/* CTA Buttons */}
+        <div className="mx-auto flex w-full max-w-md flex-col gap-3">
           <Button
             size="lg"
-            className="group rounded-none bg-primary text-primary-foreground hover:bg-primary/90 glow-primary transition-all duration-300 px-8 mb-12"
+            onClick={openProjectForm}
+            className="group h-11 w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90 glow-primary transition-all duration-300 px-8"
           >
             Start Your Product Journey
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
-        </Link>
-
-        {/* Contact Info */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-muted-foreground">
-          <a
-            href="mailto:info@teqade.com"
-            className="flex items-center gap-2 hover:text-foreground transition-colors duration-200"
-          >
-            <Mail className="h-4 w-4 text-primary" />
-            info@teqade.com
-          </a>
-          <span className="hidden sm:block text-border">|</span>
-          <a
-            href="tel:+919952234440"
-            className="flex items-center gap-2 hover:text-foreground transition-colors duration-200"
-          >
-            <Phone className="h-4 w-4 text-primary" />
-            +91 9952234440
-          </a>
+          <ContactButtons withMail className="w-full" />
         </div>
+
       </div>
     </section>
   )

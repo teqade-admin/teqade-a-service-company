@@ -10,22 +10,25 @@ import { TrustSection } from "@/components/trust-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
 import { CursorGlow } from "@/components/cursor-glow"
+import { ProjectFormProvider } from "@/components/project-form"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
-      <BuildShowcaseSection />
-      <ServicesSection />
-      <TechStackSection />
-      <HowWeWorkSection />
-      <WhyTeqadeSection />
-      <FeaturedWorkSection />
-      <TrustSection />
-      <CTASection />
-      <Footer />
-      <CursorGlow />
-    </main>
+    <ProjectFormProvider>
+      <main className="min-h-screen bg-background">
+        <Navbar />
+        <HeroSection />
+        <BuildShowcaseSection />
+        <ServicesSection />
+        <TechStackSection />
+        <HowWeWorkSection />
+        <WhyTeqadeSection />
+        <FeaturedWorkSection />
+        <TrustSection />
+        <CTASection />
+        <Footer />
+        <CursorGlow />
+      </main>
+    </ProjectFormProvider>
   )
 }
