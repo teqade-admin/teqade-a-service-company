@@ -72,14 +72,14 @@ export function FeaturedWorkSection() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 p-6">
-                <span className="text-xs font-medium text-primary uppercase tracking-wider">
+              <div className="flex flex-1 flex-col p-6">
+                <span className="text-xs font-medium text-primary uppercase tracking-wider lg:block lg:min-h-[2.6em]">
                   {project.category}
                 </span>
                 <h3 className="mt-2 text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
                   {project.title}
                 </h3>
-                <p className="mt-3 text-sm text-muted-foreground text-pretty">
+                <p className="mt-3 flex-1 text-sm text-muted-foreground text-pretty">
                   {project.description}
                 </p>
 

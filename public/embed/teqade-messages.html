@@ -114,8 +114,10 @@
   .fp {
     position: absolute; left: 50%; bottom: calc(118 * var(--dp));
     width: calc(64 * var(--dp)); height: calc(64 * var(--dp)); margin-left: calc(-32 * var(--dp));
-    display: grid; place-items: center;
+    display: grid; place-items: center; cursor: pointer;
   }
+  /* only the sensor unlocks the phone, so give it a thumb-sized target beyond the glyph */
+  .fp::after { content: ""; position: absolute; inset: calc(-30 * var(--dp)); }
   .fp .glow { position: absolute; inset: calc(-34 * var(--dp)); border-radius: 50%; background: radial-gradient(circle, rgba(92, 255, 138, .55), rgba(92, 255, 138, .12) 42%, transparent 70%); }
   .fp svg { position: relative; width: calc(52 * var(--dp)); height: calc(52 * var(--dp)); fill: #DFFFE8; filter: drop-shadow(0 0 calc(7 * var(--dp)) rgba(92, 255, 138, .9)); }
   .fp .ring { position: absolute; inset: 0; border-radius: 50%; border: calc(2 * var(--dp)) solid rgba(170, 255, 200, .95); opacity: 0; }
@@ -214,7 +216,7 @@
 </head>
 <body>
 <div id="stage">
-  <div id="phone" title="Touch the fingerprint to unlock">
+  <div id="phone" title="Touch the fingerprint sensor to unlock">
     <span class="btn power"></span><span class="btn volume"></span>
     <div class="bezel"></div>
     <div id="screen">
@@ -347,6 +349,7 @@
   /* ---------- helpers ---------- */
   const DP = 1.88; // px per Android dp on this canvas
   const $ = (id) => document.getElementById(id);
+  const $$ = (selector) => document.querySelector(selector);
   const clamp01 = (x) => Math.min(1, Math.max(0, x));
   const lerp = (a, b, t) => a + (b - a) * t;
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -726,7 +729,7 @@
     fit();
     setInterval(updateClock, 15000);
     addEventListener("resize", fit);
-    phone.addEventListener("pointerdown", unlock);
+    $$(".fp").addEventListener("pointerdown", unlock);
     if (EMBED) {
       // inside the site's iframe, a null root measures against the page's viewport
       new IntersectionObserver(([entry]) => { if (entry.intersectionRatio < CONFIG.relockVisible) pause(); }, { threshold: [0, CONFIG.relockVisible] }).observe(phone);

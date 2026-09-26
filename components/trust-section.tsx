@@ -35,11 +35,13 @@ const testimonials = [
   },
 ]
 
-// The row drifts on its own: the list is rendered twice and the scroll position wraps by the width
-// of one copy, so it never reaches an end. Each card is sharpened or blurred by how close its
-// centre is to the middle of the row.
-const SPEED = 34 // px per second
-const MAX_BLUR = 5 // px, at the edges
+// A circular carousel: each testimonial holds the middle for HOLD, then the row slides quickly to
+// the next. The list is rendered three times so a card always sits on either side; when the middle
+// copy runs out, the track steps back one copy with the transition off, which looks identical.
+const HOLD = 3000
+const SLIDE = 420
+const COPIES = 3
+const EASE = "cubic-bezier(.22,.9,.24,1)"
 
 export function TrustSection() {
   const trackRef = useRef<HTMLDivElement>(null)
@@ -47,60 +49,71 @@ export function TrustSection() {
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
+    const count = testimonials.length
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    let held = reduced // a visitor reading, dragging or tabbing through holds the row still
+    let index = count // opens on the first testimonial, so the last one sits to its left
+    let held = false
     let onScreen = true
-    let raf = 0
-    let last = performance.now()
+    let timer = 0
+    let settle = 0
 
-    const focus = () => {
-      const middle = track.clientWidth / 2
-      for (const card of Array.from(track.children) as HTMLElement[]) {
-        const off = Math.abs(card.offsetLeft + card.offsetWidth / 2 - track.scrollLeft - middle)
-        const away = Math.min(1, Math.max(0, (off - card.offsetWidth * 0.4) / middle))
-        card.style.filter = `blur(${(away * MAX_BLUR).toFixed(2)}px)`
-        card.style.opacity = (1 - away * 0.6).toFixed(3)
-        card.style.transform = `scale(${(1 - away * 0.06).toFixed(3)})`
+    const place = (animate: boolean) => {
+      const cards = Array.from(track.children) as HTMLElement[]
+      const step = cards[1].offsetLeft - cards[0].offsetLeft
+      track.style.transition = animate ? `transform ${SLIDE}ms ${EASE}` : "none"
+      track.style.transform = `translateX(calc(50% - ${index * step + cards[0].offsetWidth / 2}px))`
+      cards.forEach((card, i) => {
+        const away = Math.abs(i - index)
+        card.style.transition = animate ? `transform ${SLIDE}ms ${EASE}, opacity ${SLIDE}ms ${EASE}` : "none"
+        card.style.transform = `scale(${away === 0 ? 1 : 0.84})`
+        card.style.opacity = away === 0 ? "1" : away === 1 ? "0.65" : "0"
+      })
+    }
+
+    const advance = () => {
+      if (held || !onScreen) return
+      index += 1
+      place(true)
+      if (index >= count * 2) {
+        // one copy along is the same view, so stepping back is invisible
+        settle = window.setTimeout(() => {
+          index -= count
+          place(false)
+        }, SLIDE + 60)
       }
     }
 
-    // distance from a card to its duplicate: scrolling past it lands on an identical row
-    const period = () => {
-      const cards = track.children as HTMLCollectionOf<HTMLElement>
-      return cards[testimonials.length].offsetLeft - cards[0].offsetLeft
-    }
-
-    const frame = (now: number) => {
-      const dt = Math.min((now - last) / 1000, 0.05)
-      last = now
-      if (!held && onScreen) track.scrollLeft += SPEED * dt
-      const loop = period()
-      if (loop > 0 && track.scrollLeft >= loop) track.scrollLeft -= loop
-      focus()
-      raf = requestAnimationFrame(frame)
-    }
-    raf = requestAnimationFrame(frame)
+    place(false)
+    if (!reduced) timer = window.setInterval(advance, HOLD + SLIDE)
 
     const hold = () => (held = true)
-    const release = () => (held = reduced)
-    const watcher = new IntersectionObserver(([entry]) => (onScreen = entry.isIntersecting), { threshold: 0.05 })
-    watcher.observe(track)
+    const release = () => (held = false)
+    // only react to a real width change (a breakpoint), never to the scaling during a slide
+    let lastWidth = 0
+    const resize = new ResizeObserver(() => {
+      const width = (track.children[0] as HTMLElement).offsetWidth
+      if (width !== lastWidth) {
+        lastWidth = width
+        place(false)
+      }
+    })
+    resize.observe(track)
+    const watcher = new IntersectionObserver(([entry]) => (onScreen = entry.isIntersecting), { threshold: 0 })
+    watcher.observe(track.parentElement ?? track)
     track.addEventListener("pointerenter", hold)
     track.addEventListener("pointerleave", release)
-    track.addEventListener("pointerdown", hold)
     track.addEventListener("focusin", hold)
     track.addEventListener("focusout", release)
-    window.addEventListener("pointerup", release)
 
     return () => {
-      cancelAnimationFrame(raf)
+      clearInterval(timer)
+      clearTimeout(settle)
+      resize.disconnect()
       watcher.disconnect()
       track.removeEventListener("pointerenter", hold)
       track.removeEventListener("pointerleave", release)
-      track.removeEventListener("pointerdown", hold)
       track.removeEventListener("focusin", hold)
       track.removeEventListener("focusout", release)
-      window.removeEventListener("pointerup", release)
     }
   }, [])
 
@@ -121,44 +134,40 @@ export function TrustSection() {
         </div>
       </div>
 
-      {/* Testimonials: a looping row, sharp in the middle and blurred at the edges */}
-      <div
-        ref={trackRef}
-        style={{ scrollBehavior: "auto" }}
-        className="relative z-10 flex gap-5 overflow-x-auto px-[calc(50%-124px)] py-4 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)] sm:[mask-image:linear-gradient(to_right,transparent,black_14%,black_86%,transparent)] [scrollbar-width:none] sm:px-[calc(50%-190px)] [&::-webkit-scrollbar]:hidden"
-      >
-        {[...testimonials, ...testimonials].map((testimonial, index) => (
-          <div
-            key={`${testimonial.author}-${index}`}
-            aria-hidden={index >= testimonials.length}
-            className="card-torch relative w-[248px] shrink-0 border border-border bg-card p-6 will-change-[filter,transform] sm:w-[380px]"
-          >
-            {/* Quote Icon */}
-            <Quote className="h-8 w-8 text-primary/30 mb-4" />
+      {/* One testimonial holds the middle; the neighbours sit back, smaller and dimmed */}
+      <div className="relative z-10 overflow-hidden py-6">
+        <div ref={trackRef} className="flex items-stretch gap-5 will-change-transform">
+          {Array.from({ length: COPIES }, () => testimonials)
+            .flat()
+            .map((testimonial, index) => (
+              <article
+                key={`${testimonial.author}-${index}`}
+                aria-hidden={index < testimonials.length || index >= testimonials.length * 2}
+                className="card-torch flex w-[290px] shrink-0 flex-col border border-border bg-card p-6 will-change-transform sm:w-[390px]"
+              >
+                <Quote className="h-8 w-8 shrink-0 text-primary/30 mb-4" />
 
-            {/* Quote */}
-            <p className="text-foreground/90 text-pretty mb-6 leading-relaxed">
-              {`"${testimonial.quote}"`}
-            </p>
+                {/* the quote takes up the slack, so every author block sits on the same line */}
+                <p className="flex-1 text-foreground/90 text-pretty leading-relaxed">
+                  {`"${testimonial.quote}"`}
+                </p>
 
-            {/* Author */}
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center bg-gradient-to-br from-primary/50 to-accent/50">
-                <span className="text-sm font-bold text-foreground">
-                  {testimonial.author.charAt(0)}
-                </span>
-              </div>
-              <div>
-                <div className="font-medium text-foreground">
-                  {testimonial.author}
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-gradient-to-br from-primary/50 to-accent/50">
+                    <span className="text-sm font-bold text-foreground">
+                      {testimonial.author.charAt(0)}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-medium text-foreground">{testimonial.author}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {testimonial.role}, {testimonial.company}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {testimonial.role}, {testimonial.company}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+              </article>
+            ))}
+        </div>
       </div>
     </section>
   )
