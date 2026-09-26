@@ -33,7 +33,7 @@ export function CTASection() {
           {"Let's Build It."}
         </h2>
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground text-pretty mb-10">
-          {"Launching a startup, bringing AI into production, or scaling an existing platform? Bring the vision — we'll bring the engineering."}
+          {"Launching a startup, bringing AI into production, or scaling an existing platform? Bring the vision. We'll bring the engineering."}
         </p>
 
         {/* CTA Buttons */}

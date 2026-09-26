@@ -9,7 +9,7 @@ const focusAreas = [
     audience: "Startups & product teams",
     title: "Idea to Product",
     description:
-      "Have an idea? We give you the engineering team to build it — architecture, MVP, launch, and scale — without hiring one first.",
+      "Have an idea? We give you the engineering team to build it: architecture, MVP, launch, and scale, without hiring one first.",
     features: ["MVP Development", "Web & Mobile Apps", "APIs & Microservices"],
     cover: "/images/sections/idea.jpg",
     coverAlt: "A startup team planning around a whiteboard",
@@ -50,7 +50,7 @@ export function ServicesSection() {
             One Partner. Every Stage.
           </h2>
           <p className="max-w-2xl text-lg text-muted-foreground text-pretty md:pb-1">
-            Full-lifecycle engineering across product, AI, data, cloud, and security — from the
+            Full-lifecycle engineering across product, AI, data, cloud, and security, from the
             first architecture decision to 24×7 operations.
           </p>
         </div>

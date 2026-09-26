@@ -22,12 +22,12 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: 'Teqade Technologies | Your Vision. Our Engineering.',
-  description: 'Teqade is the engineering partner for startups and growing companies — we architect, build, scale, and run software across product, AI, data, and cloud, while every decision stays with you.',
+  description: 'Teqade is the engineering partner for startups and growing companies. We architect, build, scale, and run software across product, AI, data, and cloud, while every decision stays with you.',
   keywords: ['engineering partner', 'product engineering', 'startup development', 'AI transformation', 'agentic AI', 'data engineering', 'Apache Airflow', 'cloud migration', 'software architecture', 'MVP development'],
   authors: [{ name: 'Teqade Technologies' }],
   openGraph: {
     title: 'Teqade Technologies | Your Vision. Our Engineering.',
-    description: 'The engineering partner for startups and growing companies — from architecture to scale, across product, AI, data, and cloud.',
+    description: 'The engineering partner for startups and growing companies, from architecture to scale, across product, AI, data, and cloud.',
     type: 'website',
     locale: 'en_US',
     siteName: 'Teqade Technologies',

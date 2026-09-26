@@ -15,7 +15,7 @@ import { PROJECT_FORM_ENDPOINT } from "@/lib/project-form-config"
 // (integrations/google-sheets/project-form.gs).
 
 const NEEDS = ["New product / MVP", "AI in production", "Data workflows", "Scale or modernize", "Support & maintenance", "Something else"]
-const TIMELINES = ["ASAP", "1–3 months", "3–6 months", "Just exploring"]
+const TIMELINES = ["ASAP", "1-3 months", "3-6 months", "Just exploring"]
 
 type Status = "idle" | "sending" | "sent" | "error"
 type Fields = Record<string, string>

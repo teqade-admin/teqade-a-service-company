@@ -39,7 +39,7 @@ const differentiators = [
     icon: Cpu,
     title: "AI-Native, Secure by Default",
     description:
-      "AI and DevSecOps are woven into everything we build — never bolted on later.",
+      "AI and DevSecOps are woven into everything we build, never bolted on later.",
   },
 ]
 
@@ -69,7 +69,7 @@ export function WhyTeqadeSection() {
             Your Vision Stays Yours
           </h2>
           <p className="mt-4 mx-auto max-w-2xl text-lg text-muted-foreground text-pretty">
-            {"We're your engineering partner, not your co-founder. You keep the equity and the final say — we bring the expertise and the hands to build it."}
+            {"We're your engineering partner, not your co-founder. You keep the equity and the final say. We bring the expertise and the hands to build it."}
           </p>
         </div>
 

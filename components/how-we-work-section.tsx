@@ -38,7 +38,7 @@ const models = [
     bestFor: "Strategy",
     title: "Consulting & Advisory",
     description:
-      "Architecture reviews, assessments, and roadmaps. You get clear options and trade-offs — you make the call.",
+      "Architecture reviews, assessments, and roadmaps. You get clear options and trade-offs. You make the call.",
   },
   {
     icon: ArrowRightLeft,

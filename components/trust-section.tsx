@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     quote:
-      "The team at Teqade doesn't just build software — they become true partners in your product journey. Highly recommend for any startup.",
+      "The team at Teqade doesn't just build software. They become true partners in your product journey. Highly recommend for any startup.",
     author: "Parvathi Ganesan",
     role: "Director",
     company: "Steerlit Technologies",

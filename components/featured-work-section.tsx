@@ -25,7 +25,7 @@ const projects = [
   },
   {
     category: "Automotive AI & Vehicle Intelligence Platform",
-    title: "Steerlit — The Future of Car Intelligence",
+    title: "Steerlit: The Future of Car Intelligence",
     description:
       "Steerlit is an AI-powered smart car platform that monitors vehicle health in real time and delivers predictive insights to enhance safety, performance, and maintenance.",
     tags: ["Flutter", "Python", "AWS", "Razorpay", "OBD"],

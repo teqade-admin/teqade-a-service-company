@@ -32,7 +32,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs text-pretty mb-4">
-              Your vision. Our engineering. The engineering partner for startups and growing companies — from architecture to scale.
+              Your vision. Our engineering. The engineering partner for startups and growing companies, from architecture to scale.
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 text-primary" />
