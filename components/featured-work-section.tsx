@@ -10,25 +10,25 @@ const projects = [
     title: "Intelligent Cattle Monitoring",
     description:
       "Built an ML-powered platform that processes thousands of sensor data from dozens of farms and hundreds of cattle regularly, extracting insights and identifying activities, behaviours, and workflows for determining health and anomalies.",
-    tags: ["AWS", "Python", "Clickhouse"],
+    tags: ["AWS", "Python", "Clickhouse", "Airflow"],
     cover: "/images/work/smartbell.jpg",
     coverAlt: "Dairy cows with yellow ear tags feeding in a barn",
   },
   {
-    category: "SaaS Application",
+    category: "MotoMate GMS Application",
     title: "Garage Revenue Engine",
     description:
       "MotoMate is a smart garage management platform that digitizes vehicle servicing, customer communication, and workflow tracking in one seamless system that helps garages improve efficiency, increase revenue, and deliver a modern, transparent service experience.",
-    tags: ["Flutter", "FastAPI", "WhatsappBusinessAPI", "Supabase", "Razorpay"],
+    tags: ["Flutter", "FastAPI", "WhatsappBusinessAPI", "Postgres", "Razorpay", "GCP"],
     cover: "/images/work/motomate.jpg",
     coverAlt: "A mechanic servicing a car in a busy garage workshop",
   },
   {
-    category: "Automotive AI & Vehicle Intelligence Platform",
-    title: "Steerlit: The Future of Car Intelligence",
+    category: "Steerlit - Automotive AI & Vehicle Intelligence Platform",
+    title: "The Future of Car Intelligence",
     description:
       "Steerlit is an AI-powered smart car platform that monitors vehicle health in real time and delivers predictive insights to enhance safety, performance, and maintenance.",
-    tags: ["Flutter", "Python", "AWS", "Razorpay", "OBD"],
+    tags: ["Flutter", "Python", "AWS", "Razorpay", "OBD", "Predictive ML"],
     cover: "/images/work/steerlit.jpg",
     coverAlt: "A modern car dashboard with a large touchscreen display",
   },
