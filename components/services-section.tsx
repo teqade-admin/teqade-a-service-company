@@ -2,7 +2,7 @@
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
-// Cover photos from Unsplash (Unsplash License): Austin Distel, Growtika, Luke Chesser.
+// Cover photos from Unsplash (Unsplash License): Austin Distel, Growtika, Markus Winkler.
 
 const focusAreas = [
   {
@@ -30,7 +30,7 @@ const focusAreas = [
       "Pipelines, orchestration, and lakehouses that make your data reliable for analytics, ML, and AI.",
     features: ["Data Pipelines", "Apache Airflow", "Lakehouse & Warehousing"],
     cover: "/images/sections/data.jpg",
-    coverAlt: "An analytics dashboard with charts on a laptop screen",
+    coverAlt: "A stock market chart displayed on a laptop screen",
   },
 ]
 
