@@ -56,10 +56,10 @@ const total = categories.reduce((n, category) => n + category.tech.length, 0)
 
 function Logo({ name, file, className = "" }: { name: string; file: string; className?: string }) {
   return (
-    <div className={`group relative grid place-items-center bg-white shadow-[0_6px_18px_rgba(0,0,0,0.35)] ${className}`}>
+    <div className={`group relative z-0 grid place-items-center bg-white shadow-[0_6px_18px_rgba(0,0,0,0.35)] hover:z-30 ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={`${basePath}/logos/${file}.svg`} alt={name} title={name} loading="lazy" className="h-full w-full object-contain" />
-      <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-1.5 -translate-x-1/2 whitespace-nowrap bg-background/90 px-1.5 py-0.5 text-[10px] font-semibold text-foreground opacity-0 transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 -translate-x-1/2 whitespace-nowrap bg-background/90 px-1.5 py-0.5 text-[10px] font-semibold text-foreground opacity-0 transition-opacity group-hover:opacity-100">
         {name}
       </span>
     </div>
@@ -152,7 +152,7 @@ export function TechStackSection() {
                 return (
                   <div key={category.title} className={`transition-opacity duration-200 ${dim(i)}`}>
                     {category.tech.map(([name, file], j) => (
-                      <div key={file} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ ...pct(positions[j]), width: `${round((TILE / W) * 100)}%` }}>
+                      <div key={file} className="absolute z-0 -translate-x-1/2 -translate-y-1/2 hover:z-30" style={{ ...pct(positions[j]), width: `${round((TILE / W) * 100)}%` }}>
                         <Logo name={name} file={file} className="aspect-square p-[12%]" />
                       </div>
                     ))}
